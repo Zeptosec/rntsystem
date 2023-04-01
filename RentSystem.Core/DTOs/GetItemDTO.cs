@@ -1,7 +1,4 @@
-﻿using RentSystem.Core.Entities;
-using RentSystem.Core.Enums;
-
-namespace RentSystem.Core.DTOs
+﻿namespace RentSystem.Core.DTOs
 {
     public class GetItemDTO
     {

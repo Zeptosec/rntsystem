@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
 using RentSystem.Core.Contracts.Service;
 using RentSystem.Core.DTOs;
@@ -9,9 +10,11 @@ namespace RentSystem.API.Controllers
     public class ItemController : ControllerBase
     {
         private readonly IItemService _itemService;
-        public ItemController(IItemService itemService)
+        private readonly IValidator<ItemDTO> _validator;
+        public ItemController(IItemService itemService, IValidator<ItemDTO> validator)
         {
             _itemService = itemService;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -29,17 +32,31 @@ namespace RentSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ItemDTO itemDTO) 
         {
-            await _itemService.CreateAsync(itemDTO);
+            var result = _validator.Validate(itemDTO);
 
-            return Ok();
+            if (result.IsValid)
+            {
+                await _itemService.CreateAsync(itemDTO);
+                return Ok(); 
+            }
+
+            var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            return BadRequest(errorMessages);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, ItemDTO itemDTO)
         {
-            await _itemService.UpdateAsync(id, itemDTO);
+            var result = _validator.Validate(itemDTO);
 
-            return Ok();
+            if (result.IsValid)
+            {
+                await _itemService.UpdateAsync(id, itemDTO);
+                return Ok();
+            }
+
+            var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            return BadRequest(errorMessages);
         }
 
         [HttpDelete]

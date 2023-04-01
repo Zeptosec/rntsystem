@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Mvc;
 using RentSystem.Core.Contracts.Service;
 using RentSystem.Core.DTOs;
 
@@ -9,9 +10,11 @@ namespace RentSystem.API.Controllers
     public class AdvertController : ControllerBase
     {
         private readonly IAdvertService _advertService;
-        public AdvertController(IAdvertService advertService)
+        private readonly IValidator<AdvertDTO> _validator;
+        public AdvertController(IAdvertService advertService, IValidator<AdvertDTO> validator)
         {
             _advertService = advertService;
+            _validator = validator;
         }
 
         [HttpGet]
@@ -29,17 +32,32 @@ namespace RentSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(AdvertDTO advertDTO)
         {
-            await _advertService.CreateAsync(advertDTO);
+            var result = _validator.Validate(advertDTO);
 
-            return Ok();
+            if (result.IsValid)
+            {
+                await _advertService.CreateAsync(advertDTO);
+                return Ok();
+            }
+
+            var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            return BadRequest(errorMessages);
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(int id, AdvertDTO advertDTO)
         {
-            await _advertService.UpdateAsync(id, advertDTO);
+            var result = _validator.Validate(advertDTO);
 
-            return Ok();
+            if (result.IsValid)
+            {
+                await _advertService.UpdateAsync(id, advertDTO);
+
+                return Ok();
+            }
+
+            var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
+            return BadRequest(errorMessages);
         }
 
         [HttpDelete]
