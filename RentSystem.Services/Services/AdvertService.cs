@@ -54,12 +54,13 @@ namespace RentSystem.Services.Services
                 throw new Exception();
             }
 
+            advert.Title = advertDTO.Title;
             advert.Description = advertDTO.Description;
             advert.ImageUrl = advertDTO.ImageUrl;
             advert.VideoUrl = advertDTO.VideoUrl;
-            advert.DeliveryType = advertDTO.DeliveryType;
             advert.RentStart = advertDTO.RentStart;
             advert.RentEnd = advertDTO.RentEnd;
+            advert.DeliveryType = advertDTO.DeliveryType; 
 
             await _advertRepository.UpdateAsync(advert);
         }

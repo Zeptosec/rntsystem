@@ -9,11 +9,13 @@ namespace RentSystem.Services.Services
     public class ItemService : IItemService
     {
         private readonly IItemRepository _itemRepository;
+        private readonly IAdvertRepository _advertRepository;
         private readonly IMapper _mapper;
 
-        public ItemService(IItemRepository itemRepository, IMapper mapper) 
+        public ItemService(IItemRepository itemRepository, IAdvertRepository advertRepository, IMapper mapper) 
         {
             _itemRepository = itemRepository;
+            _advertRepository = advertRepository;
             _mapper = mapper;
         }
 
@@ -52,11 +54,16 @@ namespace RentSystem.Services.Services
                 throw new Exception();
             }
 
-            item.Category = itemDTO.Category;
             item.Name = itemDTO.Name;
             item.Price = itemDTO.Price;
+            item.Category = itemDTO.Category;
             item.State = itemDTO.State;
-            item.AdvertId = itemDTO.AdvertId;
+
+            var advert = _advertRepository.GetAsync(itemDTO.AdvertId);
+
+            if (advert == null) throw new Exception("No such advert exists");
+
+            item.AdvertId = advert.Id;
 
             await _itemRepository.UpdateAsync(item);
         }
