@@ -59,7 +59,7 @@ namespace RentSystem.Services.Services
             item.Category = itemDTO.Category;
             item.State = itemDTO.State;
 
-            var advert = _advertRepository.GetAsync(itemDTO.AdvertId);
+            var advert = await _advertRepository.GetAsync(itemDTO.AdvertId);
 
             if (advert == null) throw new Exception("No such advert exists");
 
