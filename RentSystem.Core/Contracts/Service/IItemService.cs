@@ -6,7 +6,7 @@ namespace RentSystem.Core.Contracts.Service
     {
         Task<ICollection<GetItemDTO>> GetAllAsync();
         Task<GetItemDTO> GetAsync(int id);
-        Task CreateAsync(ItemDTO item);
+        Task CreateAsync(ItemDTO item, int userId);
         Task UpdateAsync(int id, ItemDTO item);
         Task DeleteAsync(int id);
     }

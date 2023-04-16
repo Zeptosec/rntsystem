@@ -1,4 +1,5 @@
 ﻿using RentSystem.Core.DTOs;
+using RentSystem.Core.Entities;
 
 namespace RentSystem.Core.Contracts.Service
 {
@@ -6,7 +7,7 @@ namespace RentSystem.Core.Contracts.Service
     {
         Task<ICollection<GetAdvertDTO>> GetAllAsync();
         Task<GetAdvertDTO> GetAsync(int id);
-        Task CreateAsync(AdvertDTO item);
+        Task CreateAsync(AdvertDTO item, int userId);
         Task UpdateAsync(int id, AdvertDTO item);
         Task DeleteAsync(int id);
     }

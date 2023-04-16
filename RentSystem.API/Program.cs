@@ -1,5 +1,10 @@
+using Microsoft.OpenApi.Models;
 using RentSystem.Repositories.Extensions;
 using RentSystem.Services.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using RentSystem.API.Extensions;
+using Microsoft.AspNetCore.Authorization;
+using RentSystem.Services.Handlers;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -9,9 +14,15 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRepositories(builder.Configuration);
 builder.Services.AddServices(builder.Configuration);
 builder.Services.AddControllers();
+
+builder.Services
+       .ConfigureAuthentication(builder.Configuration)
+       .ConfigureSwagger(builder.Configuration)
+       .ConfigureMvc()
+       .ConfigureAuthorization();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
@@ -22,6 +33,7 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

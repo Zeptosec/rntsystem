@@ -3,6 +3,7 @@ using RentSystem.Core.Contracts.Repository;
 using RentSystem.Core.Contracts.Service;
 using RentSystem.Core.DTOs;
 using RentSystem.Core.Entities;
+using RentSystem.Core.Exceptions;
 
 namespace RentSystem.Services.Services
 {
@@ -30,17 +31,17 @@ namespace RentSystem.Services.Services
         {
             var advert = await _advertRepository.GetAsync(id);
 
-            if (advert == null)
-            {
-                throw new Exception();
-            }
+            if (advert == null) throw new NotFoundException("Advert", id);
+
 
             return _mapper.Map<GetAdvertDTO>(advert);
         }
 
-        public async Task CreateAsync(AdvertDTO advertDTO)
+        public async Task CreateAsync(AdvertDTO advertDTO, int userId)
         {
             var advert = _mapper.Map<Advert>(advertDTO);
+
+            advert.UserId = userId;
 
             await _advertRepository.CreateAsync(advert);
         }
@@ -49,10 +50,7 @@ namespace RentSystem.Services.Services
         {
             var advert = await _advertRepository.GetAsync(id);
 
-            if (advert == null)
-            {
-                throw new Exception();
-            }
+            if (advert == null) throw new NotFoundException("Advert", id);
 
             advert.Title = advertDTO.Title;
             advert.Description = advertDTO.Description;
@@ -60,7 +58,7 @@ namespace RentSystem.Services.Services
             advert.VideoUrl = advertDTO.VideoUrl;
             advert.RentStart = advertDTO.RentStart;
             advert.RentEnd = advertDTO.RentEnd;
-            advert.DeliveryType = advertDTO.DeliveryType; 
+            advert.DeliveryType = advertDTO.DeliveryType;
 
             await _advertRepository.UpdateAsync(advert);
         }
@@ -69,10 +67,7 @@ namespace RentSystem.Services.Services
         {
             var advert = await _advertRepository.GetAsync(id);
 
-            if (advert == null)
-            {
-                throw new Exception();
-            }
+            if (advert == null) throw new NotFoundException("Advert", id);
 
             await _advertRepository.DeleteAsync(advert);
         }

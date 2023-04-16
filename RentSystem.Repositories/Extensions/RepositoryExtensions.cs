@@ -14,6 +14,7 @@ namespace RentSystem.Repositories.Extensions
 
             services.AddDbContext<RentDBContext>(options => options.UseNpgsql(connectionString));
 
+            services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IItemRepository, ItemRepository>();
             services.AddTransient<IAdvertRepository, AdvertRepository>();
 
