@@ -1,8 +1,9 @@
-﻿using RentSystem.Core.Enums;
+﻿using RentSystem.Core.Contracts.Model;
+using RentSystem.Core.Enums;
 
 namespace RentSystem.Core.Entities
 {
-    public class Advert
+    public class Advert : IUserOwnedResource
     {
         public int Id { get; set; }
         public string Title { get; set; } = string.Empty;
@@ -13,5 +14,6 @@ namespace RentSystem.Core.Entities
         public DateTime RentStart {get;set;}
         public DateTime RentEnd { get; set; }
         public virtual List<Item> Items { get; set; } = new List<Item>();
+        public int UserId { get; set; }
     }
 }

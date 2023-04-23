@@ -15,6 +15,7 @@ namespace RentSystem.Repositories
 
         public virtual DbSet<Advert> Adverts { get; set; }
         public virtual DbSet<Item> Items { get; set; }
+        public virtual DbSet<User> Users { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

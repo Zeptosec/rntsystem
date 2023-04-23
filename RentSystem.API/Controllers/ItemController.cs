@@ -1,7 +1,11 @@
 using FluentValidation;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentSystem.Core.Contracts.Repository;
 using RentSystem.Core.Contracts.Service;
 using RentSystem.Core.DTOs;
+using RentSystem.Core.Exceptions;
+using RentSystem.Core.Policies;
 
 namespace RentSystem.API.Controllers
 {
@@ -10,10 +14,20 @@ namespace RentSystem.API.Controllers
     public class ItemController : ControllerBase
     {
         private readonly IItemService _itemService;
+        private readonly IUserService _userService;
+        private readonly IAuthorizationService _authorizationService;
+        private readonly IItemRepository _itemRepository;
+        private readonly IAdvertRepository _advertRepository;
         private readonly IValidator<ItemDTO> _validator;
-        public ItemController(IItemService itemService, IValidator<ItemDTO> validator)
+        public ItemController(IItemService itemService, IUserService userService, 
+                              IAuthorizationService authorizationService, IItemRepository itemRepository, 
+                              IAdvertRepository advertRepository, IValidator<ItemDTO> validator)
         {
             _itemService = itemService;
+            _itemRepository = itemRepository;
+            _userService = userService;
+            _advertRepository = advertRepository;
+            _authorizationService = authorizationService;
             _validator = validator;
         }
 
@@ -30,14 +44,23 @@ namespace RentSystem.API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(ItemDTO itemDTO) 
+        public async Task<IActionResult> Create(ItemDTO itemDTO)
         {
+            var userId = User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var user = await _userService.GetAsync(int.Parse(userId)) ?? throw new NotFoundException("User was not found");
+
             var result = _validator.Validate(itemDTO);
 
             if (result.IsValid)
             {
-                await _itemService.CreateAsync(itemDTO);
-                return Ok(); 
+                await _itemService.CreateAsync(itemDTO, user.Id);
+                return Ok();
             }
 
             var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
@@ -48,6 +71,17 @@ namespace RentSystem.API.Controllers
         public async Task<IActionResult> Update(int id, ItemDTO itemDTO)
         {
             var result = _validator.Validate(itemDTO);
+
+            var item = await _itemRepository.GetAsync(id);
+            var advert = await _advertRepository.GetAsync(itemDTO.AdvertId);
+
+            var itemAuthResult = await _authorizationService.AuthorizeAsync(User, item, PolicyNames.SameUser);
+            var advertAuthResult = await _authorizationService.AuthorizeAsync(User, advert, PolicyNames.SameUser);
+
+            if (!itemAuthResult.Succeeded || !advertAuthResult.Succeeded)
+            {
+                return Forbid();
+            }
 
             if (result.IsValid)
             {
@@ -62,6 +96,15 @@ namespace RentSystem.API.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
+            var item = await _itemRepository.GetAsync(id);
+
+            var authResult = await _authorizationService.AuthorizeAsync(User, item, PolicyNames.SameUser);
+
+            if (!authResult.Succeeded)
+            {
+                return Forbid();
+            }
+
             await _itemService.DeleteAsync(id);
 
             return Ok();
