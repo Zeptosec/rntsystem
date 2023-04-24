@@ -3,9 +3,9 @@
     public class GetItemDTO
     {
         public int Id { get; set; }
-        public string Category { get; set; } = string.Empty;
+        public int Category { get; set; }
         public string Name { get; set; } = string.Empty;
         public double Price { get; set; }
-        public string State { get; set; } = string.Empty;
+        public int State { get; set; }
     }
 }

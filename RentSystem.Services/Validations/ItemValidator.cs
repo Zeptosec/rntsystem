@@ -21,7 +21,6 @@ namespace RentSystem.Services.Validations
                 .GreaterThan(0).WithMessage("Price must be greater than 0");
 
             RuleFor(x => x.State)
-                .NotEmpty().WithMessage("State is required")
                 .IsInEnum();
 
             RuleFor(x => x.AdvertId)

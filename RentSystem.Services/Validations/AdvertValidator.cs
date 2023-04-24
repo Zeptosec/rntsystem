@@ -26,7 +26,6 @@ namespace RentSystem.Services.Validations
                 .WithMessage("End date cannot be in the past").GreaterThan(x => x.RentStart.Date).WithMessage("End date has to be after start date");
 
             RuleFor(x => x.DeliveryType)
-                .NotEmpty().WithMessage("Delivery type is required")
                 .IsInEnum().WithMessage("No such delivery type exists");
         }
     }
