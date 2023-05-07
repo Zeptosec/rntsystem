@@ -13,7 +13,7 @@ namespace RentSystem.API.Controllers
 {
     [ApiController]
     [Route("api/adverts")]
-    public class AdvertController : ControllerBase
+    public class AdvertController : BaseController
     {
         private readonly IAdvertService _advertService;
         private readonly IAdvertRepository _advertRepository;
@@ -46,14 +46,9 @@ namespace RentSystem.API.Controllers
         [AuthorizeRole(Role.Owner)]
         public async Task<IActionResult> Create(AdvertDTO advertDTO)
         {
-            var userId = User.FindFirst("UserId")?.Value;
+            var userId = GetUserId();
 
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
-            var user = await _userService.GetAsync(int.Parse(userId)) ?? throw new Exception("User not found");
+            var user = await _userService.GetAsync(userId) ?? throw new Exception("User not found");
 
             var result = _validator.Validate(advertDTO);
 

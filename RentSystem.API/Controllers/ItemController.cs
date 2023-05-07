@@ -12,7 +12,7 @@ namespace RentSystem.API.Controllers
 {
     [ApiController]
     [Route("api/items")]
-    public class ItemController : ControllerBase
+    public class ItemController : BaseController
     {
         private readonly IItemService _itemService;
         private readonly IUserService _userService;
@@ -47,14 +47,9 @@ namespace RentSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ItemDTO itemDTO)
         {
-            var userId = User.FindFirst("UserId")?.Value;
+            var userId = GetUserId();
 
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
-            var user = await _userService.GetAsync(int.Parse(userId)) ?? throw new NotFoundException("User was not found");
+            var user = await _userService.GetAsync(userId) ?? throw new NotFoundException("User was not found");
 
             var result = _validator.Validate(itemDTO);
 

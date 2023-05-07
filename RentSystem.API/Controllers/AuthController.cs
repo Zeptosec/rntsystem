@@ -8,7 +8,7 @@ namespace RentSystem.API.Controllers
 {
     [ApiController]
     [Route("api/auth")]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly IUserService _userService;
         private readonly ITokenManager _tokenManager;
@@ -57,9 +57,9 @@ namespace RentSystem.API.Controllers
                 return Unauthorized();
             }
 
-            var userId = User.FindFirst("UserId")?.Value;
+            var userId = GetUserId();
 
-            return Ok(await _userService.GetAsync(int.Parse(userId)));
+            return Ok(await _userService.GetAsync(userId));
         }
     }
 }
