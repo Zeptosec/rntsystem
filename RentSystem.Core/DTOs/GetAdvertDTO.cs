@@ -11,5 +11,6 @@
         public DateTime RentStart { get; set; }
         public DateTime RentEnd { get; set; }
         public virtual List<GetItemDTO> Items { get; set; } = new List<GetItemDTO>();
+        public UserDTO User { get; set; } = new UserDTO();
     }
 }

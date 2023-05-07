@@ -15,5 +15,7 @@ namespace RentSystem.Core.Entities
         public string PostCode { get; set; } = "";
         public string Password { get; set; } = "";
         public byte[] Salt { get; set; }
+        public List<Advert> Adverts { get; set; } = new List<Advert>();
+        public List<Item> Items { get; set; } = new List<Item>();
     }
 }

@@ -6,6 +6,7 @@ using RentSystem.Core.Contracts.Service;
 using RentSystem.Core.DTOs;
 using RentSystem.Core.Exceptions;
 using RentSystem.Core.Policies;
+using System.Security.Claims;
 
 namespace RentSystem.API.Controllers
 {
@@ -46,7 +47,7 @@ namespace RentSystem.API.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(ItemDTO itemDTO)
         {
-            var userId = User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+            var userId = User.FindFirst("UserId")?.Value;
 
             if (userId == null)
             {

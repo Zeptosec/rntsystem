@@ -24,6 +24,8 @@ namespace RentSystem.Repositories
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Advert>().HasMany(a => a.Items).WithOne(i => i.Advert).OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<Advert>().HasOne(a => a.User).WithMany(u => u.Adverts);
+            modelBuilder.Entity<Item>().HasOne(i => i.User).WithMany(u => u.Items);
         }
     }
 }

@@ -31,7 +31,6 @@ namespace RentSystem.API.Controllers
         [Route("register")]
         public async Task<IActionResult> Register(RegisterUserDTO registerUserDTO)
         {
-            
             var result = _validator.Validate(registerUserDTO);
 
             if (!result.IsValid)
@@ -58,7 +57,7 @@ namespace RentSystem.API.Controllers
                 return Unauthorized();
             }
 
-            var userId = token.Claims.First(x => x.Type == "UserId").Value;
+            var userId = User.FindFirst("UserId")?.Value;
 
             return Ok(await _userService.GetAsync(int.Parse(userId)));
         }

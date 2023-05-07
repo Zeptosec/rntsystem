@@ -13,5 +13,6 @@ namespace RentSystem.Core.Entities
         public int AdvertId { get; set; }
         public Advert Advert { get; set; }
         public int UserId { get; set; }
+        public User User { get; set; } = new User();
     }
 }

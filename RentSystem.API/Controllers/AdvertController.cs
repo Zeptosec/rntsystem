@@ -46,7 +46,7 @@ namespace RentSystem.API.Controllers
         [AuthorizeRole(Role.Owner)]
         public async Task<IActionResult> Create(AdvertDTO advertDTO)
         {
-            var userId = User.Claims.FirstOrDefault(x => x.Type == "UserId")?.Value;
+            var userId = User.FindFirst("UserId")?.Value;
 
             if (userId == null)
             {

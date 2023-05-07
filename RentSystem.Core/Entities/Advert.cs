@@ -15,5 +15,6 @@ namespace RentSystem.Core.Entities
         public DateTime RentEnd { get; set; }
         public virtual List<Item> Items { get; set; } = new List<Item>();
         public int UserId { get; set; }
+        public User User { get; set; } = new User();
     }
 }
