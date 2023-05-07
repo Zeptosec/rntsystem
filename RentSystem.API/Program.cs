@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using RentSystem.API.Extensions;
 using Microsoft.AspNetCore.Authorization;
 using RentSystem.Services.Handlers;
+using RentSystem.API.Middlewares;
 
 AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
@@ -25,6 +26,9 @@ builder.Services
 builder.Services.AddEndpointsApiExplorer();
 
 var app = builder.Build();
+
+// Add error handling middleware
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 // Configure the HTTP request pipeline.
 
