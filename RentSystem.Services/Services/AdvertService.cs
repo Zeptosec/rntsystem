@@ -11,12 +11,14 @@ namespace RentSystem.Services.Services
     {
         private readonly IAdvertRepository _advertRepository;
         private readonly IItemRepository _itemRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public AdvertService(IAdvertRepository advertRepository, IItemRepository itemRepository, IMapper mapper)
+        public AdvertService(IAdvertRepository advertRepository, IItemRepository itemRepository,IUserRepository userRepository, IMapper mapper)
         {
             _advertRepository = advertRepository;
             _itemRepository = itemRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -39,9 +41,12 @@ namespace RentSystem.Services.Services
 
         public async Task CreateAsync(AdvertDTO advertDTO, int userId)
         {
+            var user = await _userRepository.GetAsync(userId) ?? throw new NotFoundException("User was not found");
+
             var advert = _mapper.Map<Advert>(advertDTO);
 
             advert.UserId = userId;
+            advert.User = user;
 
             await _advertRepository.CreateAsync(advert);
         }

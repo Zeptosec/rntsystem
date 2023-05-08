@@ -11,6 +11,7 @@ namespace RentSystem.Services.Services
     {
         private readonly IItemRepository _itemRepository;
         private readonly IAdvertRepository _advertRepository;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
         public ItemService(IItemRepository itemRepository, IAdvertRepository advertRepository, IMapper mapper)
@@ -41,9 +42,12 @@ namespace RentSystem.Services.Services
 
         public async Task CreateAsync(ItemDTO itemDTO, int userId)
         {
+            var user = await _userRepository.GetAsync(userId) ?? throw new NotFoundException("User was not found");
+
             var item = _mapper.Map<Item>(itemDTO);
 
             item.UserId = userId;
+            item.User = user;
 
             await _itemRepository.CreateAsync(item);
         }

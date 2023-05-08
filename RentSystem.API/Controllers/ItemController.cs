@@ -49,13 +49,11 @@ namespace RentSystem.API.Controllers
         {
             var userId = GetUserId();
 
-            var user = await _userService.GetAsync(userId) ?? throw new NotFoundException("User was not found");
-
             var result = _validator.Validate(itemDTO);
 
             if (result.IsValid)
             {
-                await _itemService.CreateAsync(itemDTO, user.Id);
+                await _itemService.CreateAsync(itemDTO, userId);
                 return Ok();
             }
 
