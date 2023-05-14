@@ -15,6 +15,7 @@ namespace RentSystem.Services.MappingProfiles
                        opt => opt.MapFrom(o => o.State))
                 .ReverseMap();
             CreateMap<Item, ItemDTO>().ReverseMap();
+            CreateMap<Item, GetReservationItemDTO>().ReverseMap();
         }
     }
 }

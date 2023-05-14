@@ -8,5 +8,14 @@
         public double Price { get; set; }
         public int State { get; set; }
         public UserDTO User { get; set; } = new UserDTO();
+        public GetItemReservationDTO Reservation { get; set; }
+    }
+
+    public class GetItemReservationDTO
+    {
+        public int Id { get; set; }
+        public DateTime DateFrom { get; set; }
+        public DateTime DateTo { get; set; }
+        public double Price { get; set; }
     }
 }

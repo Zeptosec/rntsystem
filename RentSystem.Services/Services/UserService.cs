@@ -30,22 +30,19 @@ namespace RentSystem.Services.Services
             await _userRepository.CreateAsync(newUser);
         }
 
-        public Task DeleteAsync(UserDTO userDTO)
+        public async Task<ICollection<UserDTO>> GetAllAsync()
         {
-            throw new NotImplementedException();
-        }
+            var users = await _userRepository.GetAllAsync();
 
-        public Task<ICollection<UserDTO>> GetAllAsync()
-        {
-            throw new NotImplementedException();
+            return _mapper.Map<List<UserDTO>>(users);
         }
 
         public async Task<UserDTO?> GetAsync(int id)
         {
             var user = await _userRepository.GetAsync(id);
 
-            if(user == null) throw new NotFoundException("User", id);
-            
+            if (user == null) throw new NotFoundException("User", id);
+
             return _mapper.Map<UserDTO>(user);
         }
 
@@ -62,9 +59,30 @@ namespace RentSystem.Services.Services
             return new SuccessfullLoginDTO { AccessToken = accessToken };
         }
 
-        public Task UpdateAsync(UserDTO userDTO)
+        public async Task UpdateAsync(int userId, UpdateUserDTO userDTO)
         {
-            throw new NotImplementedException();
+            var user = await _userRepository.GetAsync(userId);
+
+            if (user == null) throw new NotFoundException("User", userId);
+
+            user.Name = userDTO.Name;
+            user.Surname = userDTO.Surname;
+            user.Phone = userDTO.Phone;
+            user.Email = userDTO.Email;
+            user.City = userDTO.City;
+            user.HouseNumber = userDTO.HouseNumber;
+            user.PostCode = userDTO.PostCode;
+
+            await _userRepository.UpdateAsync(user);
+        }
+
+        public async Task DeleteAsync(int userId)
+        {
+            var user = await _userRepository.GetAsync(userId);
+
+            if (user == null) throw new NotFoundException("User", userId);
+
+            await _userRepository.DeleteAsync(user);
         }
     }
 }

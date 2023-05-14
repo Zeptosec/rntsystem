@@ -8,21 +8,23 @@ namespace RentSystem.Repositories.Repositories
     {
         private readonly RentDBContext _rentDBContext;
 
-        public UserRepository(RentDBContext rentDBContext) 
+        public UserRepository(RentDBContext rentDBContext)
         {
             _rentDBContext = rentDBContext;
         }
 
-        public async Task CreateAsync(User item)
+        public async Task CreateAsync(User user)
         {
-            _rentDBContext.Users.Add(item);
+            _rentDBContext.Users.Add(user);
 
             await _rentDBContext.SaveChangesAsync();
         }
 
-        public Task DeleteAsync(User item)
+        public async Task DeleteAsync(User user)
         {
-            throw new NotImplementedException();
+            _rentDBContext.Users.Remove(user);
+
+            await _rentDBContext.SaveChangesAsync();
         }
 
         public User? FirstOrDefault(Func<User, bool> predicate)
@@ -30,9 +32,9 @@ namespace RentSystem.Repositories.Repositories
             return _rentDBContext.Users.FirstOrDefault(predicate);
         }
 
-        public Task<ICollection<User>> GetAllAsync()
+        public async Task<ICollection<User>> GetAllAsync()
         {
-            throw new NotImplementedException();
+            return await _rentDBContext.Users.ToListAsync();
         }
 
         public async Task<User?> GetAsync(int id)
@@ -40,9 +42,11 @@ namespace RentSystem.Repositories.Repositories
             return await _rentDBContext.Users.FirstOrDefaultAsync(x => x.Id == id);
         }
 
-        public Task UpdateAsync(User item)
+        public async Task UpdateAsync(User user)
         {
-            throw new NotImplementedException();
+            _rentDBContext.Users.Update(user);
+
+            await _rentDBContext.SaveChangesAsync();
         }
     }
 }
