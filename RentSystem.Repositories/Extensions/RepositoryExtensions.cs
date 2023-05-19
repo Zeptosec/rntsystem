@@ -19,6 +19,7 @@ namespace RentSystem.Repositories.Extensions
             services.AddTransient<IAdvertRepository, AdvertRepository>();
             services.AddTransient<IReservationRepository, ReservationRepository>();
             services.AddTransient<IContractRepository, ContractRepository>();
+            services.AddTransient<IRequestRepository, RequestRepository>();
 
             return services;
         }

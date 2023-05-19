@@ -18,6 +18,7 @@ namespace RentSystem.Repositories
         public virtual DbSet<Reservation> Reservations { get; set; }
         public virtual DbSet<Contract> Contracts { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Request> Requests { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -36,6 +37,8 @@ namespace RentSystem.Repositories
             modelBuilder.Entity<Contract>().HasOne(c => c.Item).WithOne(i => i.Contract).HasForeignKey<Contract>(c => c.ItemId); ;
             modelBuilder.Entity<Contract>().HasOne(c => c.Owner).WithMany(o => o.OwnerContracts);
             modelBuilder.Entity<Contract>().HasOne(c => c.Renter).WithMany(r => r.RenterContracts);
+
+            modelBuilder.Entity<Request>().HasOne(r => r.User).WithMany(u => u.Requests);
         }
     }
 }

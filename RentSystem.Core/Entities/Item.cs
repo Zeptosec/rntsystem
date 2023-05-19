@@ -17,6 +17,6 @@ namespace RentSystem.Core.Entities
         public int? ContractId { get; set; }
         public Contract? Contract { get; set; }
         public int UserId { get; set; }
-        public User User { get; set; } = new User();
+        public User User { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace RentSystem.Services.Extensions
             services.AddTransient<IUserService, UserService>();
             services.AddTransient<IReservationService, ReservationService>();
             services.AddTransient<IContractService, ContractService>();
+            services.AddTransient<IRequestService, RequestService>();
             services.AddTransient<ITokenManager, TokenManager>();
 
             services.AddSingleton<IAuthorizationHandler, SameUserAuthorizationHandler>();

@@ -20,5 +20,6 @@ namespace RentSystem.Core.Entities
         public List<Reservation> Reservations { get; set; } = new();
         public List<Contract> OwnerContracts { get; set; } = new();
         public List<Contract> RenterContracts { get; set; } = new();
+        public List<Request> Requests { get; set; } = new();
     }
 }
