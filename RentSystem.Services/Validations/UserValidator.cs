@@ -10,7 +10,6 @@ namespace RentSystem.Services.Validations
         {
             RuleFor(x => x.Role)
                 .NotEqual(Role.Admin).WithMessage("User cannot be admin")
-                .NotEmpty().WithMessage("Role is required")
                 .IsInEnum().WithMessage("No such role exists");
         }
     }
