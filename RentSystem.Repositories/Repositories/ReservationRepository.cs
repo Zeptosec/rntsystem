@@ -15,12 +15,12 @@ namespace RentSystem.Repositories.Repositories
 
         public async Task<ICollection<Reservation>> GetAllAsync()
         {
-            return await _rentDBContext.Reservations.Include(x => x.User).Include(x => x.Item).ToListAsync();
+            return await _rentDBContext.Reservations.Include(x => x.User).Include(x => x.Item).ThenInclude(x => x.User).ToListAsync();
         }
 
         public async Task<Reservation?> GetAsync(int id)
         {
-            return await _rentDBContext.Reservations.Include(x => x.User).Include(x => x.Item).FirstOrDefaultAsync(x => x.Id == id);
+            return await _rentDBContext.Reservations.Include(x => x.User).Include(x => x.Item).ThenInclude(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<Reservation>> GetByTimeIntervalAsync(DateTime dateFrom, DateTime dateTo)

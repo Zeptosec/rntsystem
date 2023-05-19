@@ -19,5 +19,6 @@ namespace RentSystem.Core.DTOs
         public string Name { get; set; } = string.Empty;
         public double Price { get; set; }
         public int State { get; set; }
+        public UserDTO User {get;set;}
     }
 }
