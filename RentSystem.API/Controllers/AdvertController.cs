@@ -79,7 +79,7 @@ namespace RentSystem.API.Controllers
             {
                 await _advertService.UpdateAsync(id, advertDTO);
 
-                return Ok();
+                return NoContent();
             }
 
             var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
@@ -101,7 +101,7 @@ namespace RentSystem.API.Controllers
 
             await _advertService.DeleteAsync(id);
 
-            return Ok();
+            return NoContent();
         }
     }
 }

@@ -14,10 +14,11 @@ namespace RentSystem.Services.Services
         private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public ItemService(IItemRepository itemRepository, IAdvertRepository advertRepository, IMapper mapper)
+        public ItemService(IItemRepository itemRepository, IAdvertRepository advertRepository, IUserRepository userRepository, IMapper mapper)
         {
             _itemRepository = itemRepository;
             _advertRepository = advertRepository;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 

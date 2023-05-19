@@ -29,6 +29,7 @@ namespace RentSystem.API.Middlewares
                     BadRequestException => (int)HttpStatusCode.BadRequest,
                     NotFoundException => (int)HttpStatusCode.NotFound,
                     ForbiddenException => (int)HttpStatusCode.Forbidden,
+                    AlreadyExistsException => (int)HttpStatusCode.BadRequest,
                     _ => (int)HttpStatusCode.InternalServerError,
                 };
 

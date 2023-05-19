@@ -7,9 +7,9 @@ namespace RentSystem.Core.Contracts.Service
     {
         Task<ICollection<UserDTO>> GetAllAsync();
         Task<UserDTO?> GetAsync(int id);
-        Task<SuccessfullLoginDTO> LoginAsync(LoginUserDTO userDTO);
-        Task CreateAsync(RegisterUserDTO userDTO);
-        Task UpdateAsync(UserDTO userDTO);
-        Task DeleteAsync(UserDTO userDTO);
+        Task<SuccessfullLoginDTO> LoginAsync(LoginUserDTO user);
+        Task CreateAsync(RegisterUserDTO user);
+        Task UpdateAsync(int id, UpdateUserDTO user);
+        Task DeleteAsync(int id);
     }
 }

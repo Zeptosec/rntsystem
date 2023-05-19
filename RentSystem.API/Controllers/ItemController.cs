@@ -1,9 +1,11 @@
 using FluentValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using RentSystem.API.Extensions;
 using RentSystem.Core.Contracts.Repository;
 using RentSystem.Core.Contracts.Service;
 using RentSystem.Core.DTOs;
+using RentSystem.Core.Enums;
 using RentSystem.Core.Exceptions;
 using RentSystem.Core.Policies;
 using System.Security.Claims;
@@ -20,8 +22,8 @@ namespace RentSystem.API.Controllers
         private readonly IItemRepository _itemRepository;
         private readonly IAdvertRepository _advertRepository;
         private readonly IValidator<ItemDTO> _validator;
-        public ItemController(IItemService itemService, IUserService userService, 
-                              IAuthorizationService authorizationService, IItemRepository itemRepository, 
+        public ItemController(IItemService itemService, IUserService userService,
+                              IAuthorizationService authorizationService, IItemRepository itemRepository,
                               IAdvertRepository advertRepository, IValidator<ItemDTO> validator)
         {
             _itemService = itemService;
@@ -45,6 +47,7 @@ namespace RentSystem.API.Controllers
         }
 
         [HttpPost]
+        [AuthorizeRole(Role.Owner)]
         public async Task<IActionResult> Create(ItemDTO itemDTO)
         {
             var userId = GetUserId();
@@ -62,6 +65,7 @@ namespace RentSystem.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [AuthorizeRole(Role.Owner)]
         public async Task<IActionResult> Update(int id, ItemDTO itemDTO)
         {
             var result = _validator.Validate(itemDTO);
@@ -80,7 +84,7 @@ namespace RentSystem.API.Controllers
             if (result.IsValid)
             {
                 await _itemService.UpdateAsync(id, itemDTO);
-                return Ok();
+                return NoContent();
             }
 
             var errorMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
@@ -88,6 +92,7 @@ namespace RentSystem.API.Controllers
         }
 
         [HttpDelete]
+        [AuthorizeRole(Role.Owner)]
         public async Task<IActionResult> Delete(int id)
         {
             var item = await _itemRepository.GetAsync(id);
@@ -101,7 +106,7 @@ namespace RentSystem.API.Controllers
 
             await _itemService.DeleteAsync(id);
 
-            return Ok();
+            return NoContent();
         }
     }
 }
