@@ -12,9 +12,7 @@ namespace RentSystem.Services.MappingProfiles
             CreateMap<RegisterUserDTO, User>()
                 .AfterMap((src, dest) => dest = Resolver(dest));
 
-            CreateMap<User, UserDTO>()
-                .ForMember(m => m.Role,
-                       opt => opt.MapFrom(o => o.Role)).ReverseMap();
+            CreateMap<User, UserDTO>().ReverseMap();
         }
 
         public static User Resolver(User dest) 
