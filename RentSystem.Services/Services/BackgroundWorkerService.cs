@@ -37,7 +37,7 @@ namespace RentSystem.Services.Services
                                 await requestRepository.UpdateAsync(request);
                             }
                         }
-                        await Task.Delay(600000);
+                        await Task.Delay(180000);
                     }
                 }
             }
