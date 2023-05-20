@@ -28,6 +28,8 @@ namespace RentSystem.Services.Extensions
             services.AddScoped<IValidator<ItemDTO>, ItemValidator>();
             services.AddScoped<IValidator<RegisterUserDTO>, UserValidator>();
 
+            services.AddHostedService<BackgroundWorkerService>();
+
             services.AddAutoMapper(typeof(MappingProfiles.ItemMappingProfile));
 
             return services;

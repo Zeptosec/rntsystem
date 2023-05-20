@@ -18,6 +18,11 @@ namespace RentSystem.Repositories.Repositories
             return await _rentDBContext.Requests.Include(x => x.User).ToListAsync();
         }
 
+        public async Task<ICollection<Request>> GetUnavailableAsync()
+        {
+            return await _rentDBContext.Requests.Where(x => x.IsAvailable == false).Include(x => x.User).ToListAsync();
+        }
+
         public async Task<Request?> GetAsync(int id)
         {
             return await _rentDBContext.Requests.Include(x => x.User).FirstOrDefaultAsync(x => x.Id == id);
