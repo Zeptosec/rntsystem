@@ -24,21 +24,18 @@ namespace RentSystem.Services.Services
 
                 while (!stoppingToken.IsCancellationRequested)
                 {
-                    while (!stoppingToken.IsCancellationRequested)
-                    {
-                        var requests = await requestRepository.GetUnavailableAsync();
-                        var items = await itemRepository.GetAllAsync();
+                    var requests = await requestRepository.GetUnavailableAsync();
+                    var items = await itemRepository.GetAllAsync();
 
-                        foreach (var request in requests)
+                    foreach (var request in requests)
+                    {
+                        if (items.Any(x => x.State == State.Available))
                         {
-                            if (items.Any(x => x.State == State.Available))
-                            {
-                                request.IsAvailable = true;
-                                await requestRepository.UpdateAsync(request);
-                            }
+                            request.IsAvailable = true;
+                            await requestRepository.UpdateAsync(request);
                         }
-                        await Task.Delay(180000);
                     }
+                    await Task.Delay(180000);
                 }
             }
         }
