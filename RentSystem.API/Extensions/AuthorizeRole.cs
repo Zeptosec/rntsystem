@@ -8,7 +8,9 @@ namespace RentSystem.API.Extensions
     {
         public AuthorizeRole(params Role [] roles)
         {
-            var allowedRolesAsStrings = roles.Select(x => Enum.GetName(typeof(Role), x));
+            var allowedRolesAsStrings = roles.Select(x => Enum.GetName(typeof(Role), x)).ToList();
+            allowedRolesAsStrings.Add(Enum.GetName(typeof(Role), Role.Admin));
+
             Roles = string.Join(",", allowedRolesAsStrings);
         }
     }
