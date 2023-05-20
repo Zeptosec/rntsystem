@@ -30,21 +30,17 @@ namespace RentSystem.API.Controllers
             return Ok(await _userService.GetAsync(id));
         }
 
-        [HttpPut]
-        public async Task<IActionResult> Update(UpdateUserDTO userDTO)
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(UpdateUserDTO userDTO, int id)
         {
-            var userId = GetUserId();
-
-            await _userService.UpdateAsync(userId, userDTO);
+            await _userService.UpdateAsync(id, userDTO);
             return NoContent();
         }
 
-        [HttpDelete]
-        public async Task<IActionResult> Delete()
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> Delete(int id)
         {
-            var userId = GetUserId();
-
-            await _userService.DeleteAsync(userId);
+            await _userService.DeleteAsync(id);
             return NoContent();
         }
     }
