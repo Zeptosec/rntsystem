@@ -16,7 +16,6 @@ namespace RentSystem.Services.Services
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-
             using (var scope = _serviceProvider.CreateScope())
             {
                 var requestRepository = scope.ServiceProvider.GetRequiredService<IRequestRepository>();
