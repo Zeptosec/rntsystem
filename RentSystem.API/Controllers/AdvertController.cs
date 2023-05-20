@@ -31,9 +31,9 @@ namespace RentSystem.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
+        public async Task<IActionResult> GetAll([FromQuery] Category? category)
         {
-            return Ok(await _advertService.GetAllAsync());
+            return Ok(await _advertService.GetAllAsync(category));
         }
 
         [HttpGet("{id}")]

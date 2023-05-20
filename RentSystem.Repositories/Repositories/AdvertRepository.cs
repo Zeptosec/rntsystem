@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RentSystem.Core.Contracts.Repository;
 using RentSystem.Core.Entities;
+using RentSystem.Core.Enums;
 
 namespace RentSystem.Repositories.Repositories
 {
@@ -13,8 +14,14 @@ namespace RentSystem.Repositories.Repositories
             _rentDBContext = rentDBContext;
         }
 
-        public async Task<ICollection<Advert>> GetAllAsync()
+        public async Task<ICollection<Advert>> GetAllAsync(Category? category)
         {
+
+            if (category.HasValue)
+            {
+                return await _rentDBContext.Adverts.Where(x => x.Items.Any(x => x.Category == category)).Include(x => x.Items).Include(x => x.User).ToListAsync();
+            }
+
             return await _rentDBContext.Adverts.Include(x => x.Items).Include(x => x.User).ToListAsync();
         }
 

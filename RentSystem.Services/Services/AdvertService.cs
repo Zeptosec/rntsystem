@@ -3,6 +3,7 @@ using RentSystem.Core.Contracts.Repository;
 using RentSystem.Core.Contracts.Service;
 using RentSystem.Core.DTOs;
 using RentSystem.Core.Entities;
+using RentSystem.Core.Enums;
 using RentSystem.Core.Exceptions;
 
 namespace RentSystem.Services.Services
@@ -22,9 +23,9 @@ namespace RentSystem.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<ICollection<GetAdvertDTO>> GetAllAsync()
+        public async Task<ICollection<GetAdvertDTO>> GetAllAsync(Category? category)
         {
-            var adverts = await _advertRepository.GetAllAsync();
+            var adverts = await _advertRepository.GetAllAsync(category);
 
             return _mapper.Map<List<GetAdvertDTO>>(adverts);
         }
